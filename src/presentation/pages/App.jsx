@@ -1,11 +1,14 @@
+import Forms from "../components/forms/forms";
 import Header from "../components/header/header";
 
 function App() {
   return (
-    <div className="App">
-        <Header/>
-    </div>
+    <>
+      <Header />
+      <Forms />
+    </>
   );
 }
 
 export default App;
+
