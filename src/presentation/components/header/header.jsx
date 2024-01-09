@@ -13,6 +13,7 @@ const header = () => {
 export default header;
 
 const Header = styled.header`
+	background-color: white;
 `
 const Logo = styled.img`
     width: 300px;
