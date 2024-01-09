@@ -1,7 +1,7 @@
 import { useState } from "react"
 import styled from "styled-components"
 
-const Forms = () => {
+const FormsProfile = () => {
 
     const [nome, setNome] = useState("")
     const [email, setEmail] = useState("")
@@ -14,6 +14,7 @@ const Forms = () => {
 
     return (
         <Form>
+            <H1>Profile</H1>
             <InputBox>
                 <Label>Name: </Label>
                 <Input onBlur={(e) => setNome(e.target.value)} />
@@ -27,7 +28,7 @@ const Forms = () => {
     )
 }
 
-export default Forms
+export default FormsProfile
 
 const Form = styled.form`
     display: flex;
@@ -35,7 +36,7 @@ const Form = styled.form`
     justify-content:  center;
     flex-direction: column;
     width: 400px;
-    height: 400px;
+    height: 500px;
     background-color: white;
 `
 
@@ -69,4 +70,9 @@ const Submit = styled.button`
         background-color: black;
         color: white;
     }
+`
+
+const H1 = styled.h1`
+    font-size: 3rem;
+    margin-bottom: 50px;
 `

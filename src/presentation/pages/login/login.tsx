@@ -1,4 +1,4 @@
-import Forms from "../../components/forms/forms";
+import Forms from "../../components/forms/FormsLogin";
 import styled from "styled-components";
 
 
@@ -14,5 +14,8 @@ const Login = () => {
 export default Login
 
 const BoxMain = styled.div`
-  height: 100%;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

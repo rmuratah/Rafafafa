@@ -14,6 +14,7 @@ export default header;
 
 const Header = styled.header`
 	background-color: white;
+	height: 10vh;
 `
 const Logo = styled.img`
     width: 300px;
