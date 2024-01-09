@@ -3,10 +3,10 @@ import styled from "styled-components"
 
 const Forms = () => {
 
-    const [nome, setNome] = useState()
-    const [email, setEmail] = useState()
+    const [nome, setNome] = useState("")
+    const [email, setEmail] = useState("")
 
-    function emailValidate(e) {
+    function emailValidate(e: string) {
         if (e.split('').find(char => char === '@')) {
             setEmail(e)
         }

@@ -1,20 +1,14 @@
-import Forms from "../components/forms/forms";
 import Header from "../components/header/header";
-import styled from "styled-components";
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
     <>
       <Header />
-      <BoxMain>
-        <Forms />
-      </BoxMain>
+      <Outlet />
     </>
   );
 }
 
 export default App;
 
-const BoxMain = styled.div`
-  height: 100%;
-`
