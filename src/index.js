@@ -8,7 +8,7 @@ import Login from './presentation/pages/login/login'
 import Profile from './presentation/pages/profile/profile'
 
 const router = createBrowserRouter([
-
+    
     {
         path: '/',
         element: <App />,

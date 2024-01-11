@@ -1,20 +1,13 @@
 import Forms from "../../components/forms/FormsLogin";
-import styled from "styled-components";
 
 const Login = () => {
 
     return (
-        <BoxMain>
+        <div className="BoxMain">
             <Forms />
-        </BoxMain>
+        </div>
     )
 }
 
 export default Login
 
-const BoxMain = styled.div`
-  height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`

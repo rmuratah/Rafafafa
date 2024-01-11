@@ -1,108 +1,105 @@
-import { useEffect, useState } from "react"
-import styled from "styled-components"
+// import axios from "axios"
+// import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
+import './FormsProfile.css'
+import axios from 'axios'
 
 interface Props {
-  UserData: {
-    user: {
-      firstname: string,
-      email: string,
-    }
-    permissions: string[]
-  }
+  emailError?: boolean;
+  email: string
 }
 
-const FormsProfile = ({ UserData }: Props) => {
+type UserData = {
 
-  const [firstname, setFirstname] = useState("")
-  const [email, setEmail] = useState("")
+  user: {
+    firstname: string,
+    email: string,
+  }
+  permissions: string[]
+
+};
+
+const FormsProfile = ({ email }: Props) => {
+
+  const [userData, setUserData] = useState<UserData>({
+    user: {
+      firstname: '',
+      email: '',
+    },
+    permissions: [],
+  });
 
   useEffect(() => {
-    setFirstname(UserData.user.firstname)
-    setEmail(UserData.user.email)
-  }, [UserData])
+    axios.get(`http://localhost:3001/users/${email}`)
+      .then(response => setUserData(response.data[0].UserData))
+  }, [email])
+
+
+  const [firstName, setFirstName] = useState("");
+  const [emailEdit, setEmailEdit] = useState("");
+  const [firstNameError, setFirstNameError] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+
+  // Function to edit User
+  const editUser = async (firstname: string, emailEdit: string) => {
+    await axios.put(`http://localhost:3001/users/${email}`,
+      {
+        firstname,
+        emailEdit
+      }
+    )
+    window.location.reload();
+  }
+
+  useEffect(() => {
+    setFirstName(userData.user.firstname);
+    setEmailEdit(userData.user.email);
+  }, [userData]);
+
+  // Function to validate the FirstName
+  const validateFirstName = (firstName: string) => {
+    if (/^[a-zA-Z]*$/.test(firstName) && firstName.length <= 15) {
+      setFirstNameError(false);
+    } else setFirstNameError(true);
+  }
+
+  // Function to validade the Email
+  const validateEmail = (email: string) => {
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length < 25) {
+      setEmailError(false);
+    } else setEmailError(true);
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    UserData.permissions.includes("user:profile:view") ? <Form>
-      <H1>Profile</H1>
-      <InputBox>
-        <Label>Name: </Label>
-        {UserData.permissions.includes("user:profile:firstname:view") || UserData.permissions.includes("user:profile:view") ?
-          <Input
-            onChange={(e) => setFirstname(e.target.value)} value={firstname}
-            readOnly={UserData.permissions.includes("user:profile:firstname:edit") || UserData.permissions.includes("user:profile:edit") ? false : true}
-          /> : undefined
-        }
-      </InputBox>
-      <InputBox>
-        <Label>Email: </Label>
-        {UserData.permissions.includes("user:profile:email:view") || UserData.permissions.includes("user:profile:view") ?
-          <Input
-            type="email"
-            onChange={(e) => setEmail(e.target.value)} value={email}
-            readOnly={UserData.permissions.includes("user:profile:email:edit") || UserData.permissions.includes("user:profile:edit") ? false : true}
-          /> : undefined
-        }
-      </InputBox>
-      {UserData.permissions.includes("user:profile:firstname:edit") || UserData.permissions.includes("user:profile:firstname:edit") || UserData.permissions.includes("user:profile:edit") ?
-        <Submit onClick={() => { console.log(firstname); console.log(email) }}>Save</Submit>
-        : undefined
-      }
-    </Form> : <h1 style={{ color: "black", fontSize: "5rem" }}>You do not have permission to see your profile</h1>
+    userData.permissions.includes("user:profile:view") ? <div className="form">
+      <h1>Profile</h1>
+      <div className="inputBox">
+        <label className="">First Name: </label>
+        {userData.permissions.includes("user:profile:firstname:view") || userData.permissions.includes("user:profile:view") ?
+          <input
+            style={{ borderColor: firstNameError ? "red" : "black" }}
+            onChange={(e) => { validateFirstName(e.target.value); setFirstName(e.target.value) }} value={firstName}
+            readOnly={userData.permissions.includes("user:profile:firstname:edit") || userData.permissions.includes("user:profile:edit") ? false : true}
+          /> : undefined}
+      </div>
+      <div className="inputBox">
+        <label>Email: </label>
+        {userData.permissions.includes("user:profile:email:view") || userData.permissions.includes("user:profile:view") ?
+          <input
+            style={{ borderColor: emailError ? "red" : "black" }} value={emailEdit}
+            onChange={(e) => { validateEmail(emailEdit); setEmailEdit(e.target.value) }}
+            readOnly={userData.permissions.includes("user:profile:email:edit") || userData.permissions.includes("user:profile:edit") ? false : true}
+          /> : undefined}
+      </div>
+      {userData.permissions.includes("user:profile:firstname:edit") || userData.permissions.includes("user:profile:firstname:edit") || userData.permissions.includes("user:profile:edit") ?
+        <button className="Submit" onClick={() => firstNameError === false && emailError === false && editUser(firstName, emailEdit)}>Save</button>
+        : undefined}
+    </div> : <h1 style={{ color: "black", fontSize: "5rem" }}>You do not have permission to see your profile</h1>
   )
 }
 
-export default FormsProfile
-
-const Form = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content:  center;
-    flex-direction: column;
-    width: 40rem;
-    height: 50rem;
-    border-radius: 2rem;
-    backdrop-filter: blur(5rem);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-`
-
-const Label = styled.label`
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-`
-
-const Input = styled.input`
-    padding: 1.5rem;
-    border-radius: 1rem;
-    font-size: 1.5rem;
-`
-
-const InputBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
-    margin-top: 5px;
-    width: 300px;
-`
-
-const Submit = styled.button`
-     background-color: white;
-    border-radius: 5px;
-    padding: 7.5px;
-    border: 2px solid black;
-    cursor: pointer;
-    width: 300px;
-    transition: all.3s;
-    margin-top: 20px;
-    border-radius: 1rem;
-    font-size: 2rem;
-
-    &:hover{
-        background-color: black;
-        color: white;
-    }
-`
-
-const H1 = styled.h1`
-    font-size: 5rem;
-    margin-bottom: 50px;
-`
+export default FormsProfile;

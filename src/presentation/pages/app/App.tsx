@@ -3,6 +3,8 @@ import { Outlet } from 'react-router-dom';
 
 function App() {
 
+  document.title = 'Sigma Case';
+
   return (
     <>
       <Header />
