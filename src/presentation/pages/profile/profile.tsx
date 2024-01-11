@@ -1,11 +1,15 @@
 import styled from "styled-components"
 import Forms from "../../components/forms/FormsProfile"
+import { useLocation } from "react-router-dom"
+
 
 const Profile = () => {
 
+    const location = useLocation()
+    
     return (
         <BoxMain>
-            <Forms />
+            <Forms user={location.state}/>
         </BoxMain>
     )
 }

@@ -1,36 +1,56 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 
-const FormsProfile = () => {
+interface Props {
+    user: {
+        firstname: string,
+        email: string,
+        permissions: string[]
+    }
+}
 
-    const [nome, setNome] = useState("")
+const FormsProfile = ({ user }: Props) => {
+
+    const [firstname, setFirstname] = useState("")
     const [email, setEmail] = useState("")
 
-    function emailValidate(e: string) {
-        if (e.split('').find(char => char === '@')) {
-            setEmail(e)
-        }
-    }
+    useEffect(() => {
+        setFirstname(user.firstname)
+        setEmail(user.email)
+    }, [user])
 
     return (
-        <Form>
+        user.permissions.includes("user:profile:view") ? <Form>
             <H1>Profile</H1>
             <InputBox>
                 <Label>Name: </Label>
-                <Input onBlur={(e) => setNome(e.target.value)} />
+                {user.permissions.includes("user:profile:firstname:view") || user.permissions.includes("user:profile:view") ?
+                    <Input
+                        onChange={(e) => setFirstname(e.target.value)} value={firstname}
+                        readOnly={user.permissions.includes("user:profile:firstname:edit") || user.permissions.includes("user:profile:edit") ? false : true}
+                    /> : undefined
+                }
             </InputBox>
             <InputBox>
                 <Label>Email: </Label>
-                <Input onBlur={(e) => emailValidate(e.target.value)} />
+                {user.permissions.includes("user:profile:email:view") || user.permissions.includes("user:profile:view") ?
+                    <Input
+                        onChange={(e) => setEmail(e.target.value)} value={email}
+                        readOnly={user.permissions.includes("user:profile:email:edit") || user.permissions.includes("user:profile:edit") ? false : true}
+                    /> : undefined
+                }
             </InputBox>
-            <Submit onClick={() => { console.log(nome); console.log(email) }}>Sign in</Submit>
-        </Form>
+            {user.permissions.includes("user:profile:firstname:edit") || user.permissions.includes("user:profile:firstname:edit") || user.permissions.includes("user:profile:edit")?
+                <Submit onClick={() => { console.log(firstname); console.log(email) }}>Save</Submit>
+                : undefined
+            }
+        </Form> : <h1 style={{ color: "white", fontSize: "3rem" }}>You do not have permission to see your profile</h1>
     )
 }
 
 export default FormsProfile
 
-const Form = styled.form`
+const Form = styled.div`
     display: flex;
     align-items: center;
     justify-content:  center;
