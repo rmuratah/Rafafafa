@@ -1,16 +1,13 @@
-import styled from "styled-components";
+import logo from '../../assets/images/sigmalogo.png'
+import './header.css'
 
 const header = () => {
 
-    return (
-        <Header>
-            dasdasd
-        </Header>
-    )
+	return (
+		<header>
+			<img className="logo" src={logo} alt="Logo" />
+		</header>
+	)
 }
 
 export default header;
-
-const Header = styled.header`
-    background-color: red;
-`
