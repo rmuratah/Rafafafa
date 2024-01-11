@@ -22,8 +22,8 @@ const FormsLogin = () => {
                 setUsers(response.data);
             })
     }, [])
-    
-    const submit = (name: string, email: string) => users.map(user => user.email === email && user.firstname === name ? navigate("/profile", { state: user }) : setError(true))
+
+    const submit = (name: string, email: string) => users.map(user => user.UserData.user.email === email && user.UserData.user.firstname === name ? navigate("/profile", { state: user }) : setError(true))
 
     return (
         <Form>
@@ -35,7 +35,7 @@ const FormsLogin = () => {
             </InputBox>
             <InputBox>
                 <Label>Email: </Label>
-                <Input onBlur={(e: { target: { value: string } }) => setEmail(e.target.value)} error={error} />
+                <Input onBlur={(e: { target: { value: string } }) => setEmail(e.target.value)} error={error} type={"email"} />
             </InputBox>
             <Submit onClick={() => submit(name, email)}>Sign in</Submit>
         </Form>
@@ -49,19 +49,23 @@ const Form = styled.div`
     align-items: center;
     justify-content:  center;
     flex-direction: column;
-    width: 400px;
-    height: 500px;
-    background-color: white;
+    width: 40rem;
+    height: 50rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(5rem);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 `
 
 const Label = styled.label`
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
 `
 
 const Input = styled.input<InputProps>`
-  padding: 10px;
-  border-radius: 5px;
+  padding: 1.5rem;
   border-color: ${(props) => (props.error ? 'red' : 'black')}; 
+  border-radius: 1rem;
+  font-size: 1.5rem;
 `;
 
 const InputBox = styled.div`
@@ -81,6 +85,8 @@ const Submit = styled.button`
     width: 300px;
     transition: all.3s;
     margin-top: 20px;
+    border-radius: 1rem;
+    font-size: 2rem;
 
     &:hover{
         background-color: black;
@@ -89,7 +95,7 @@ const Submit = styled.button`
 `
 
 const H1 = styled.h1`
-    font-size: 3rem;
+    font-size: 5rem;
     margin-bottom: 50px;
 `
 

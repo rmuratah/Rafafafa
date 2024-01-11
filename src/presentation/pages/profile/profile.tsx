@@ -6,10 +6,12 @@ import { useLocation } from "react-router-dom"
 const Profile = () => {
 
     const location = useLocation()
-    
+
+    console.log(location.state.UserData)
+
     return (
         <BoxMain>
-            <Forms user={location.state}/>
+            <Forms UserData={location.state.UserData} />
         </BoxMain>
     )
 }
@@ -17,8 +19,8 @@ const Profile = () => {
 export default Profile
 
 const BoxMain = styled.div`
-  height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            `

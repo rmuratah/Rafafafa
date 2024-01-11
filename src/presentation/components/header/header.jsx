@@ -15,7 +15,10 @@ export default header;
 const Header = styled.header`
 	background-color: white;
 	height: 10vh;
+	display: flex;
+	align-items: center;
 `
 const Logo = styled.img`
-    width: 300px;
+    width: 250px;
+	margin-left: 1rem;
 `
